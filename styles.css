@@ -1,0 +1,455 @@
+:root {
+    --primary-color: #2196F3;
+    --secondary-color: #FFF;
+    --border-color: #E0E0E0;
+    --text-color: #333;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+}
+
+.main-table {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.summary-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.summary-item label {
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+.summary-item input {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn.primary {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.btn.secondary {
+    background-color: #4CAF50;
+    color: white;
+    margin-left: 10px;
+}
+
+.btn.danger {
+    background-color: #f44336;
+    color: var(--secondary-color);
+}
+
+@media (max-width: 768px) {
+    .summary-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 模態框的樣式 */
+.modal {
+    display: none; /* 隱藏模態框 */
+    position: fixed; /* 固定位置 */
+    z-index: 1000; /* 增加 z-index 确保显示在最上层 */
+    left: 0;
+    top: 0;
+    width: 100%; /* 全寬 */
+    height: 100%; /* 全高 */
+    overflow: auto; /* 如果內容過多，允許滾動 */
+    background-color: rgba(0,0,0,0.4); /* 背景顏色，帶透明度 */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% 從頂部和居中 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* 寬度 */
+    position: relative; /* 添加相对定位 */
+    z-index: 1001; /* 确保内容在背景之上 */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 付款表单样式 */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input:read-only {
+    background-color: #f5f5f5;
+}
+
+/* 付款按钮样式 */
+.modal-content button {
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.modal-content button:first-of-type {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.modal-content button:last-of-type {
+    background-color: #f44336;
+    color: white;
+}
+
+.modal-content button:hover {
+    opacity: 0.9;
+}
+
+/* 模态框标题样式 */
+.modal-content h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* 调整模态框大小和位置 */
+.modal-content {
+    max-width: 400px;
+    margin: 10% auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* 关闭按钮样式 */
+.close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+}
+
+.close:hover {
+    color: #333;
+}
+
+/* 添加表格行的交互样式 */
+.main-table tbody tr {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.main-table tbody tr:hover {
+    background-color: #e3f2fd;
+}
+
+/* 确保表格行可以点击 */
+#carWashData tr {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#carWashData tr:hover {
+    background-color: #e3f2fd;
+}
+
+/* 确保模态框显示在最上层 */
+.modal {
+    z-index: 1000;
+}
+
+.modal-content {
+    z-index: 1001;
+    position: relative;
+}
+
+/* Close Counter 模态框样式 */
+.modal-content.wide {
+    max-width: 800px;
+}
+
+.counter-table {
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.salary-section,
+.money-section {
+    margin: 20px 0;
+}
+
+.salary-section h4,
+.money-section h4 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* 底部按钮区域样式 */
+.bottom-actions {
+    display: flex;
+    justify-content: center;  /* 水平居中 */
+    margin-top: 30px;        /* 与上方内容保持距离 */
+    padding-top: 20px;       /* 内部上边距 */
+    border-top: 1px solid var(--border-color);  /* 添加上边框 */
+}
+
+/* 修改 danger 按钮样式 */
+.btn.danger {
+    background-color: #dc3545;  /* 更鲜艳的红色 */
+    color: white;
+    font-size: 16px;           /* 更大的字体 */
+    padding: 12px 24px;        /* 更大的按钮 */
+    text-transform: uppercase;  /* 大写字母 */
+    letter-spacing: 1px;       /* 字母间距 */
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn.danger:hover {
+    background-color: #c82333;  /* 悬停时的深红色 */
+    transform: translateY(-2px); /* 轻微上浮效果 */
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4); /* 添加阴影 */
+}
+
+/* 确保底部按钮在移动设备上也显示良好 */
+@media (max-width: 768px) {
+    .bottom-actions {
+        margin-top: 20px;
+        padding-top: 15px;
+    }
+    
+    .btn.danger {
+        width: 100%;  /* 在移动设备上占满宽度 */
+        max-width: 300px;  /* 限制最大宽度 */
+    }
+}
+
+/* Counter steps 样式 */
+.counter-step {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.counter-step.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 确保步骤之间的切换平滑 */
+.modal-content.wide {
+    min-height: 400px; /* 设置最小高度避免跳动 */
+}
+
+/* 添加表格样式 */
+.counter-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.counter-table th,
+.counter-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.counter-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+/* 空行样式 */
+.counter-table tr:nth-child(3) td {
+    border: none;
+    height: 20px;
+}
+
+/* 只读输入框样式 */
+.money-section input[readonly] {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: #666;
+}
+
+/* 可输入字段样式 */
+.money-section input:not([readonly]) {
+    background-color: #fff;
+    border: 2px solid var(--primary-color);
+}
+
+/* 添加以下样式 */
+.total-amount-display {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.total-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.total-label {
+    font-size: 1.2em;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.total-value {
+    font-size: 1.5em;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.btn.refresh {
+    background-color: #28a745;
+    color: white;
+    margin-left: 10px;
+}
+
+.refresh-icon {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* 添加刷新动画 */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.refreshing .refresh-icon {
+    animation: spin 1s linear infinite;
+}

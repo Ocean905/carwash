@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
+    <title>AMC Pro 88 Car Wash</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="action-buttons">
+            <button class="btn primary" onclick="showNewEntryForm()">NEW</button>
+            <button class="btn secondary" onclick="showSalaryForm()">SALARY</button>
+            <button class="btn refresh" onclick="refreshData()">
+                <span class="refresh-icon">🔄</span> 刷新
+            </button>
+        </div>
+        <h1>AMC Pro 88 Car Wash</h1>
+        
+        <div class="total-amount-display">
+            <div class="total-box">
+                <span class="total-label">今日总收入:</span>
+                <span id="totalDayAmount" class="total-value">RM 0.00</span>
+            </div>
+        </div>
+        
+        <!-- 主要数据表格 -->
+        <div class="main-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Index</th>
+                        <th>Car Number</th>
+                        <th>Total</th>
+                        <th>Via</th>
+                        <th>Service Person</th>
+                        <th>Remark</th>
+                        <th>Wash Type</th>
+                        <th>Member</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody id="carWashData">
+                    <!-- JavaScript 将在这里动态添加数据 -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- 添加底部按钮区域 -->
+        <div class="bottom-actions">
+            <button class="btn danger" onclick="showCloseCounter()">Close Counter</button>
+        </div>
+        
+        <div id="newEntryModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeNewEntryModal()">&times;</span>
+                <h3>新增记录</h3>
+                <div class="form-group">
+                    <label>Car Number:</label>
+                    <input type="text" id="newCarNumber">
+                </div>
+                <div class="form-group">
+                    <label>Member:</label>
+                    <input type="text" id="newMember">
+                </div>
+                <div class="form-group">
+                    <label>Price (RM):</label>
+                    <input type="number" id="newPrice" step="0.10">
+                </div>
+                <div class="form-group">
+                    <label>Via:</label>
+                    <select id="newVia">
+                        <option value="Cash">Cash</option>
+                        <option value="QR">QR Code</option>
+                        <option value="TNG">TNG</option>
+                        <option value="Package">Package</option>
+                        <option value="B">B/T</option>
+                        <option value="T">Team</option>
+                    </select>
+                </div>
+                <button onclick="submitNewEntry()">确认</button>
+                <button onclick="closeNewEntryModal()">取消</button>
+            </div>
+        </div>
+        <div id="paymentModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closePaymentForm()">&times;</span>
+                <h3>输入付款金额</h3>
+                <div class="form-group">
+                    <label>总金额 (RM):</label>
+                    <input type="number" id="totalAmount" readonly>
+                </div>
+                <div class="form-group">
+                    <label>付款金额 (RM):</label>
+                    <input type="number" id="paymentAmount" step="0.10" oninput="calculateChange()">
+                </div>
+                <div class="form-group">
+                    <label>找零 (RM):</label>
+                    <input type="number" id="changeAmount" readonly>
+                </div>
+                <div class="form-group">
+                    <label>付款方式:</label>
+                    <select id="paymentType">
+                        <option value="Cash">Cash</option>
+                        <option value="QR">QR Code</option>
+                        <option value="TNG">TNG</option>
+                        <option value="P">Package</option>
+                        <option value="B">B/T</option>
+                        <option value="T">Team</option>
+                    </select>
+                </div>
+                <button onclick="submitPayment()">确认</button>
+                <button onclick="closePaymentForm()">取消</button>
+            </div>
+        </div>
+        <div id="salaryModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeSalaryModal()">&times;</span>
+                <h3>Salary Advance</h3>
+                <div class="form-group">
+                    <label>Kent:</label>
+                    <input type="number" id="salaryKent" step="0.10">
+                </div>
+                <div class="form-group">
+                    <label>Dainel:</label>
+                    <input type="number" id="salaryDainel" step="0.10">
+                </div>
+                <div class="form-group">
+                    <label>Saleem:</label>
+                    <input type="number" id="salarySaleem" step="0.10">
+                </div>
+                <div class="form-group">
+                    <label>Min:</label>
+                    <input type="number" id="salaryMin" step="0.10">
+                </div>
+                <div class="modal-buttons">
+                    <button onclick="submitSalary()">确认</button>
+                    <button onclick="closeSalaryModal()">取消</button>
+                </div>
+            </div>
+        </div>
+        <div id="closeCounterModal" class="modal" style="display:none;">
+            <div class="modal-content wide">
+                <span class="close" onclick="closeCounterModal()">&times;</span>
+                <h3>Close Counter</h3>
+                
+                <!-- Step 2: Summary Table -->
+                <div id="summaryTableStep" class="counter-step">
+                    <!-- 显示 A-G 列的表格 -->
+                    <div class="counter-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Cash</th>
+                                    <th>QR Code</th>
+                                    <th>TNG</th>
+                                    <th>Package</th>
+                                    <th>B/T</th>
+                                    <th>Team</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="closeCounterData">
+                                <!-- JavaScript 将填充数据 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Money Count 输入区域 -->
+                    <div class="money-section">
+                        <h4>Money Count</h4>
+                        <div class="form-group">
+                            <label>Cash:</label>
+                            <input type="number" id="moneyCash" step="0.10">
+                        </div>
+                        <div class="form-group">
+                            <label>Coin:</label>
+                            <input type="number" id="moneyCoin" step="0.10">
+                        </div>
+                        <div class="form-group">
+                            <label>Petty Cash:</label>
+                            <input type="number" id="moneyPettyCash" step="0.10">
+                        </div>
+                    </div>
+                    
+                    <div class="modal-buttons">
+                        <button onclick="submitCloseCounter()">确认</button>
+                        <button onclick="closeCounterModal()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://apis.google.com/js/api.js"></script>
+        <script src="script.js"></script>
+    </div>
+</body>
+</html> 
