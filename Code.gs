@@ -76,7 +76,7 @@ function doGet(e) {
           }
           
           // 确保范围存在
-          var lastRow = Math.max(sheet.getLastRow(), 3); // 至少包含第3行
+          var lastRow = Math.max(sheet.getLastRow(), 3);
           var range = sheet.getRange(`A3:R${lastRow}`);
           var data = range.getValues();
           
