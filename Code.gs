@@ -103,7 +103,12 @@ function doGet(e) {
     
     return ContentService.createTextOutput()
       .setMimeType(ContentService.MimeType.JAVASCRIPT)
-      .setContent(callback + "(" + JSON.stringify(response) + ")");
+      .setContent(callback + "(" + JSON.stringify(response) + ")")
+      .setHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      });
       
   } catch (error) {
     Logger.log("Error in doGet: " + error.toString());
@@ -119,7 +124,12 @@ function doGet(e) {
     
     return ContentService.createTextOutput()
       .setMimeType(ContentService.MimeType.JAVASCRIPT)
-      .setContent(callback + "(" + JSON.stringify(errorResponse) + ")");
+      .setContent(callback + "(" + JSON.stringify(errorResponse) + ")")
+      .setHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      });
   }
 }
 
