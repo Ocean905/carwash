@@ -1,5 +1,5 @@
 // Google Apps Script Web App URL
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzv5rrdpIp4bWYaoeoEmcy4fL22UHy9Rp9C4Ew63UQ1xMVmw5-1_PobeHXM_QEf0beaUQ/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5AjRQSMdr5O0h8tRR_sol5bJ1UDVl7UnA3u7rEy88PLT3m7b6N7vPYBPltlNT4SSDAQ/exec';
 
 let currentRow; // 在文件顶部添加这个全局变量
 let refreshInterval;
@@ -63,33 +63,32 @@ function updateTableFromSheet(data) {
     const tbody = document.getElementById('carWashData');
     tbody.innerHTML = '';
     
-    data.forEach((row, index) => {  // 使用 index 来追踪实际的行号
-        if (row[2] && row[2].trim() !== '') {  // 检查 Car Number 是否存在
-            const servicePerson = [row[8], row[9], row[10]].filter(Boolean).join(' ');  // 合并三个 Service Person
+    data.forEach((row, index) => {
+        if (row[2] && row[2].trim() !== '') {
+            const servicePerson = row[8] || '';
             
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${row[0] || ''}</td>                 
-                <td>${row[2] || ''}</td>                
-                <td>${row[3] || ''}</td>                
-                <td>${row[7] || ''}</td>                
-                <td>${servicePerson}</td>               
-                <td>${row[14] || ''}</td>               
-                <td>${row[15] || ''}</td>               
-                <td>${row[11] || ''}</td>              
-                <td>${row[17] || ''}</td>              // 添加时间列
+                <td>${row[0] || ''}</td>
+                <td>${row[2] || ''}</td>
+                <td>${row[3] || ''}</td>
+                <td>${row[7] || ''}</td>
+                <td>${servicePerson}</td>
+                <td>${row[12] || ''}</td>
+                <td>${row[13] || ''}</td>
+                <td>${row[11] || ''}</td>
+                <td>${row[17] || ''}</td>
             `;
             tbody.appendChild(tr);
             
             tr.style.cursor = 'pointer';
             tr.addEventListener('click', function() {
                 console.log('Row clicked:', index);
-                showPaymentForm(index);  // 传递实际的行索引
+                showPaymentForm(index);
             });
         }
     });
 
-    // 计算并更新总金额
     calculateTotalAmount();
 }
 

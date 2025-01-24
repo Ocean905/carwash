@@ -70,9 +70,9 @@ function doGet(e) {
         
       case 'getData':
         try {
-          var sheet = spreadsheet.getSheetByName('Daily Record');
+          var sheet = spreadsheet.getSheetByName('DailyRecord');
           if (!sheet) {
-            throw new Error("找不到 'Daily Record' 工作表，请确保工作表名称正确");
+            throw new Error("找不到 'DailyRecord' 工作表，请确保工作表名称正确");
           }
           
           // 确保范围存在
@@ -360,9 +360,11 @@ function saveSalaryAdvance(e) {
 
 function checkAndUpdateTime(sheet, data) {
   try {
-    // 获取当前时间
+    // 获取当前时间并格式化为 HH:mm
     var now = new Date();
-    var timeString = Utilities.formatDate(now, "GMT+8", "HH:mm");
+    var hours = now.getHours().toString().padStart(2, '0');
+    var minutes = now.getMinutes().toString().padStart(2, '0');
+    var timeString = `${hours}:${minutes}`;
     
     // 遍历数据，检查 B 列和 R 列
     data.forEach((row, index) => {
@@ -377,6 +379,9 @@ function checkAndUpdateTime(sheet, data) {
           var actualRow = index + 3;
           var cell = sheet.getRange('R' + actualRow);
           cell.setValue(timeString);
+          
+          // 设置单元格格式为纯文本，避免被识别为日期
+          cell.setNumberFormat('@');
         }
       } catch (rowError) {
         Logger.log("Error processing row " + index + ": " + rowError.toString());
