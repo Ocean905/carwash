@@ -26,4 +26,4 @@ A web-based car wash management system that helps track daily operations, paymen
 
 ## Development
 
-To run locally: 
+To run locally: # carwash
