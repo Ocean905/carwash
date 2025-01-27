@@ -108,9 +108,10 @@ function doGet(e) {
       .setMimeType(ContentService.MimeType.JAVASCRIPT)
       .setContent(callback + "(" + JSON.stringify(response) + ")")
       .setHeaders({
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://stupendous-axolotl-b9585f.netlify.app',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Credentials': 'true',
         'X-Content-Type-Options': 'nosniff'
       });
       

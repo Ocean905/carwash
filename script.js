@@ -1,5 +1,5 @@
 // Google Apps Script Web App URL
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPJOHV_QEnMmW8NQbFcoEe1HmQ_wSqdvkRpiBnkuDI5CnK0edRhGSFNp-ZesMcfy75Yg/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxBwiGb4U_FCtoCcP10bqa52MjGYLpUKj_eEsEJQLCngcyyrQXKRyaaB-ir_2G0ZIWIyA/exec';  // 替换为新的部署 URL
 
 let currentRow; // 在文件顶部添加这个全局变量
 let refreshInterval;
