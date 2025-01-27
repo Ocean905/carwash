@@ -70,7 +70,10 @@ function doGet(e) {
         
       case 'getData':
         try {
+          Logger.log("Starting getData operation");
           var sheet = spreadsheet.getSheetByName('DailyRecord');
+          Logger.log("Sheet found: " + (sheet !== null));
+          
           if (!sheet) {
             throw new Error("找不到 'DailyRecord' 工作表，请确保工作表名称正确");
           }
@@ -92,7 +95,7 @@ function doGet(e) {
             lastUpdate: new Date().getTime()
           };
         } catch (sheetError) {
-          Logger.log("Error processing sheet: " + sheetError.toString());
+          Logger.log("Detailed error: " + sheetError.stack);
           throw new Error("处理工作表时出错：" + sheetError.toString());
         }
         break;
@@ -105,10 +108,10 @@ function doGet(e) {
       .setMimeType(ContentService.MimeType.JAVASCRIPT)
       .setContent(callback + "(" + JSON.stringify(response) + ")")
       .setHeaders({
-        'Access-Control-Allow-Origin': 'https://stupendous-axolotl-b9585f.netlify.app',
-        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'X-Content-Type-Options': 'nosniff'
       });
       
   } catch (error) {
@@ -127,8 +130,7 @@ function doGet(e) {
       .setMimeType(ContentService.MimeType.JAVASCRIPT)
       .setContent(callback + "(" + JSON.stringify(errorResponse) + ")")
       .setHeaders({
-        'Access-Control-Allow-Origin': 'https://stupendous-axolotl-b9585f.netlify.app',
-        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type'
       });

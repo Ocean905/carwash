@@ -1,5 +1,5 @@
 // Google Apps Script Web App URL
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwb9rslq8_qRle4OAgFcw1fzwTvZ7vdU8v3MFI6GXDH060_kfX9jf9iGyBUH7ggPnPDUA/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPJOHV_QEnMmW8NQbFcoEe1HmQ_wSqdvkRpiBnkuDI5CnK0edRhGSFNp-ZesMcfy75Yg/exec';
 
 let currentRow; // 在文件顶部添加这个全局变量
 let refreshInterval;
@@ -29,6 +29,7 @@ function fetchSheetData() {
     
     script.src = `${SCRIPT_URL}?action=getData&callback=${callbackName}&_=${timestamp}`;
     script.crossOrigin = "anonymous";
+    script.async = true;
     script.onerror = function(error) {
         console.error('Script load error:', error);
         alert('获取数据失败: 脚本加载错误');
@@ -37,6 +38,12 @@ function fetchSheetData() {
         }
         delete window[callbackName];
         document.body.removeChild(script);
+        
+        // 添加重试逻辑
+        setTimeout(() => {
+            console.log('Retrying...');
+            fetchSheetData();
+        }, 3000);  // 3秒后重试
     };
     
     document.body.appendChild(script);
@@ -54,7 +61,7 @@ function handleResponse(data) {
             console.log('No new data detected');
         }
     } else {
-        console.error('Error:', data ? data.error : 'No data received');
+        console.error('Error details:', data);  // 添加详细错误日志
         alert('获取数据失败: ' + (data ? data.error : '未收到数据'));
     }
 }
