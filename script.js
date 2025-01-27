@@ -1,5 +1,5 @@
 // Google Apps Script Web App URL
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXEmEBSDWWgrpCeb_9RZ_k-fOiBM8A2jbyFYAeN5nREVxph1yA_Ix6ZN_EmuRRR8BT7w/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwb9rslq8_qRle4OAgFcw1fzwTvZ7vdU8v3MFI6GXDH060_kfX9jf9iGyBUH7ggPnPDUA/exec';
 
 let currentRow; // 在文件顶部添加这个全局变量
 let refreshInterval;
@@ -28,8 +28,9 @@ function fetchSheetData() {
     };
     
     script.src = `${SCRIPT_URL}?action=getData&callback=${callbackName}&_=${timestamp}`;
-    script.onerror = function() {
-        console.error('Script load error');
+    script.crossOrigin = "anonymous";
+    script.onerror = function(error) {
+        console.error('Script load error:', error);
         alert('获取数据失败: 脚本加载错误');
         if (refreshBtn) {
             refreshBtn.classList.remove('refreshing');
