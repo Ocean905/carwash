@@ -1,5 +1,5 @@
 // Google Apps Script Web App URL
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxBwiGb4U_FCtoCcP10bqa52MjGYLpUKj_eEsEJQLCngcyyrQXKRyaaB-ir_2G0ZIWIyA/exec';  // 替换为新的部署 URL
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxi65VSOA7Qoco2y3I9nJN0wmBH7v9lmpBNQzOoMjRZBrexOe_nQGarnTZJC8Pihromog/exec';
 
 let currentRow; // 在文件顶部添加这个全局变量
 let refreshInterval;
@@ -7,7 +7,6 @@ let lastUpdateTime = 0; // 添加在文件顶部，用于追踪上次更新时�
 
 // 获取表格数据
 function fetchSheetData() {
-    // 添加刷新状态指示
     const refreshBtn = document.querySelector('.btn.refresh');
     if (refreshBtn) {
         refreshBtn.classList.add('refreshing');
@@ -18,8 +17,12 @@ function fetchSheetData() {
     const callbackName = 'handleResponse_' + timestamp;
     
     window[callbackName] = function(data) {
-        handleResponse(data);
-        // 移除刷新状态
+        if (data.success) {
+            updateTableFromSheet(data.data);
+        } else {
+            console.error('Error:', data.error);
+            alert('获取数据失败: ' + data.error);
+        }
         if (refreshBtn) {
             refreshBtn.classList.remove('refreshing');
         }
@@ -30,20 +33,37 @@ function fetchSheetData() {
     script.src = `${SCRIPT_URL}?action=getData&callback=${callbackName}&_=${timestamp}`;
     script.crossOrigin = "anonymous";
     script.async = true;
+    
+    // 改进错误处理
     script.onerror = function(error) {
         console.error('Script load error:', error);
-        alert('获取数据失败: 脚本加载错误');
         if (refreshBtn) {
             refreshBtn.classList.remove('refreshing');
         }
-        delete window[callbackName];
-        document.body.removeChild(script);
         
-        // 添加重试逻辑
-        setTimeout(() => {
-            console.log('Retrying...');
-            fetchSheetData();
-        }, 3000);  // 3秒后重试
+        // 清理
+        delete window[callbackName];
+        if (script.parentNode) {
+            script.parentNode.removeChild(script);
+        }
+        
+        // 检查重试次数
+        if (!window.retryCount) {
+            window.retryCount = 1;
+        } else {
+            window.retryCount++;
+        }
+        
+        // 最多重试 3 次
+        if (window.retryCount <= 3) {
+            console.log(`Retrying... (${window.retryCount}/3)`);
+            setTimeout(() => {
+                fetchSheetData();
+            }, 3000);
+        } else {
+            alert('连接服务器失败，请检查网络连接或刷新页面重试');
+            window.retryCount = 0;
+        }
     };
     
     document.body.appendChild(script);
@@ -73,19 +93,17 @@ function updateTableFromSheet(data) {
     
     data.forEach((row, index) => {
         if (row[2] && row[2].trim() !== '') {
-            const servicePerson = row[8] || '';
-            
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${row[0] || ''}</td>
                 <td>${row[2] || ''}</td>
                 <td>${row[3] || ''}</td>
                 <td>${row[7] || ''}</td>
-                <td>${servicePerson}</td>
+                <td>${row[8] || ''}</td>
                 <td>${row[12] || ''}</td>
                 <td>${row[13] || ''}</td>
                 <td>${row[11] || ''}</td>
-                <td>${row[17] || ''}</td>
+                <td>${row[15] || ''}</td>
             `;
             tbody.appendChild(tr);
             
