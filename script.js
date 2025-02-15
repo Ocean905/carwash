@@ -1,5 +1,5 @@
 // Google Apps Script Web App URL
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxi65VSOA7Qoco2y3I9nJN0wmBH7v9lmpBNQzOoMjRZBrexOe_nQGarnTZJC8Pihromog/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxPdsqHZiI6gHpOfGuYwy7dYW116TexUjICIxToUw6gxusxD_lIa1qrAsxL_rgkgTHbw/exec';  // 替换为你刚才获得的 URL
 
 let currentRow; // 在文件顶部添加这个全局变量
 let refreshInterval;
@@ -7,6 +7,7 @@ let lastUpdateTime = 0; // 添加在文件顶部，用于追踪上次更新时�
 
 // 获取表格数据
 function fetchSheetData() {
+    console.log('Fetching data from:', SCRIPT_URL);  // 添加这行
     const refreshBtn = document.querySelector('.btn.refresh');
     if (refreshBtn) {
         refreshBtn.classList.add('refreshing');
@@ -17,6 +18,7 @@ function fetchSheetData() {
     const callbackName = 'handleResponse_' + timestamp;
     
     window[callbackName] = function(data) {
+        console.log('Response received:', data);  // 添加这行
         if (data.success) {
             updateTableFromSheet(data.data);
         } else {
@@ -31,6 +33,7 @@ function fetchSheetData() {
     };
     
     script.src = `${SCRIPT_URL}?action=getData&callback=${callbackName}&_=${timestamp}`;
+    console.log('Request URL:', script.src);  // 添加这行
     script.crossOrigin = "anonymous";
     script.async = true;
     
